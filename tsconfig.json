@@ -1,7 +1,19 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+	"files": [],
+	"references": [
+		{
+			"path": "./tsconfig.app.json"
+		},
+		{
+			"path": "./tsconfig.node.json"
+		}
+	],
+	"compilerOptions": {
+		"baseUrl": ".", // 基准路径通常设置为项目根目录
+		"paths": {
+			// 配置路径映射
+			// 告诉 TS/IDE：当看到 "@/*" 时，去 "src/*" 里面找
+			"@/*": ["src/*"]
+		}
+	}
 }

@@ -1,0 +1,11 @@
+/node_modules/*
+/dist/*
+/html/*
+/public/*
+*.js
+*.ts
+*.jsx
+*.tsx
+*.json
+*.md
+*.yaml
