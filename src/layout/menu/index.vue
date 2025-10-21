@@ -13,10 +13,10 @@
 				v-if="!route.meta?.hidden"
 				@click="goRoute"
 			>
-                <el-icon>
-                    <!-- 🍉学到了，原来vue还能这么写 -->
-                    <component :is="route.meta?.icon"></component>
-                </el-icon>
+				<el-icon>
+					<!-- 🍉学到了，原来vue还能这么写 -->
+					<component :is="route.meta?.icon"></component>
+				</el-icon>
 				<template #title>
 					<span>{{ route.meta?.title }}</span>
 				</template>
@@ -31,10 +31,10 @@
 				@click="goRoute"
 			>
 				<template #title>
-                    <el-icon>
-                        <!-- 🍉学到了，原来vue还能这么写 -->
-                        <component :is="route.meta?.icon"></component>
-                    </el-icon>
+					<el-icon>
+						<!-- 🍉学到了，原来vue还能这么写 -->
+						<component :is="route.meta?.icon"></component>
+					</el-icon>
 					<span>{{ route.meta?.title }}</span>
 				</template>
 				<Menu :menuList="route.children"></Menu>

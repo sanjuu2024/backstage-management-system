@@ -54,7 +54,7 @@ export const constRoutes = [
 				name: 'Acl',
 				path: 'acl',
 				component: () => import('@/views/acl/index.vue'),
-				redirect: {name:'User'},   // 🍉哦哦确实可以！猜的，果然redirect也可以用name。不用写冗杂的长路径真是太好了。
+				redirect: { name: 'User' }, // 🍉哦哦确实可以！猜的，果然redirect也可以用name。不用写冗杂的长路径真是太好了。
 				meta: {
 					title: '权限管理',
 					hidden: false,
@@ -99,7 +99,7 @@ export const constRoutes = [
 				name: 'Product',
 				path: 'product',
 				component: () => import('@/views/product/index.vue'),
-				redirect: {name:'Brands'},
+				redirect: { name: 'Brands' },
 				meta: {
 					title: '商品管理',
 					hidden: false,
