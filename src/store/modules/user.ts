@@ -13,8 +13,8 @@ export const useUserStore = defineStore('user', {
 	state: (): UserState => {
 		return {
 			// 如果没存过则获得的是null
-			token: GET_TOKEN(),   // 用户令牌
-            menuRoutes: constRoutes   // 该用户对应的路由数组
+			token: GET_TOKEN(), // 用户令牌
+			menuRoutes: constRoutes, // 该用户对应的路由数组
 		};
 	},
 	actions: {

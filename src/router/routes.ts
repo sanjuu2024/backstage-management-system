@@ -8,11 +8,11 @@ export const constRoutes = [
 		name: 'Login',
 		path: '/login',
 		component: () => import('@/views/login/index.vue'),
-		meta:{
-			title:'登录',
+		meta: {
+			title: '登录',
 			hidden: true,
-			icon: 'UserFilled'
-		}
+			icon: 'UserFilled',
+		},
 	},
 	// 登陆成功后展示数据的布局页面
 	{
@@ -21,11 +21,11 @@ export const constRoutes = [
 		// component: () => import('@/views/home/index.vue'),
 		// 封装成src/layout/index.vue布局组件
 		component: () => import('@/layout/index.vue'),
-		redirect: '/home',   // 重定向到首页
+		redirect: '/home', // 重定向到首页
 		meta: {
 			title: 'layout',
-			hidden: true,  // Layout 本身在菜单中隐藏
-			icon: 'Avatar'
+			hidden: true, // Layout 本身在菜单中隐藏
+			icon: 'Avatar',
 		},
 		children: [
 			{
@@ -35,8 +35,8 @@ export const constRoutes = [
 				meta: {
 					title: '首页',
 					hidden: false,
-					icon: 'HomeFilled'
-				}
+					icon: 'HomeFilled',
+				},
 			},
 			// 数据大屏
 			{
@@ -46,18 +46,19 @@ export const constRoutes = [
 				meta: {
 					title: '数据大屏',
 					hidden: false,
-					icon: 'DataAnalysis'
-				}
+					icon: 'DataAnalysis',
+				},
 			},
 			// 权限管理
 			{
 				name: 'Acl',
 				path: 'acl',
 				component: () => import('@/views/acl/index.vue'),
+				redirect: {name:'User'},   // 🍉哦哦确实可以！猜的，果然redirect也可以用name。不用写冗杂的长路径真是太好了。
 				meta: {
 					title: '权限管理',
 					hidden: false,
-					icon: 'Lock'
+					icon: 'Lock',
 				},
 				children: [
 					{
@@ -67,8 +68,8 @@ export const constRoutes = [
 						meta: {
 							title: '用户管理',
 							hidden: false,
-							icon: 'User'
-						}
+							icon: 'User',
+						},
 					},
 					{
 						name: 'Role',
@@ -77,75 +78,81 @@ export const constRoutes = [
 						meta: {
 							title: '角色管理',
 							hidden: false,
-							icon: 'UserFilled'
-						}
+							icon: 'UserFilled',
+						},
 					},
 					{
 						name: 'Permission',
 						path: 'permission',
-						component: () => import('@/views/acl/permission/index.vue'),
+						component: () =>
+							import('@/views/acl/permission/index.vue'),
 						meta: {
 							title: '菜单管理',
 							hidden: false,
-							icon: 'Monitor'
-						}
+							icon: 'Monitor',
+						},
 					},
-				]
+				],
 			},
 			// 商品管理
 			{
 				name: 'Product',
 				path: 'product',
 				component: () => import('@/views/product/index.vue'),
+				redirect: {name:'Brands'},
 				meta: {
 					title: '商品管理',
 					hidden: false,
-					icon: 'Goods'
+					icon: 'Goods',
 				},
 				children: [
 					{
 						name: 'Brands',
 						path: 'brands',
-						component: () => import('@/views/product/brands/index.vue'),
+						component: () =>
+							import('@/views/product/brands/index.vue'),
 						meta: {
 							title: '品牌管理',
 							hidden: false,
-							icon: 'ShoppingCartFull'
-						}
+							icon: 'ShoppingCartFull',
+						},
 					},
 					{
 						name: 'Attr',
 						path: 'attr',
-						component: () => import('@/views/product/attr/index.vue'),
+						component: () =>
+							import('@/views/product/attr/index.vue'),
 						meta: {
 							title: '属性管理',
 							hidden: false,
-							icon: 'SetUp'
-						}
+							icon: 'SetUp',
+						},
 					},
 					{
 						name: 'Spu',
 						path: 'spu',
-						component: () => import('@/views/product/spu/index.vue'),
+						component: () =>
+							import('@/views/product/spu/index.vue'),
 						meta: {
 							title: 'SPU管理',
 							hidden: false,
-							icon: 'Calendar'
-						}
+							icon: 'Calendar',
+						},
 					},
 					{
 						name: 'Sku',
 						path: 'sku',
-						component: () => import('@/views/product/sku/index.vue'),
+						component: () =>
+							import('@/views/product/sku/index.vue'),
 						meta: {
 							title: 'SKU管理',
 							hidden: false,
-							icon: 'Orange'
-						}
-					}
-				]
-			}
-		]
+							icon: 'Orange',
+						},
+					},
+				],
+			},
+		],
 	},
 	// 404页面
 	{
@@ -153,10 +160,10 @@ export const constRoutes = [
 		path: '/404',
 		component: () => import('@/views/404/index.vue'),
 		meta: {
-			title: '404 Not Found(っ °Д °;)っ',	
+			title: '404 Not Found(っ °Д °;)っ',
 			hidden: true,
-			icon: 'DocumentDeleted'
-		}
+			icon: 'DocumentDeleted',
+		},
 	},
 	// 任意路由
 	{
@@ -166,7 +173,7 @@ export const constRoutes = [
 		meta: {
 			title: '任意路由重定向404',
 			hidden: true,
-			icon: 'Promotion'
-		}
+			icon: 'Promotion',
+		},
 	},
 ] as RouteRecordRaw[];
