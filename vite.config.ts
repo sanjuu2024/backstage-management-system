@@ -8,11 +8,11 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 // mock配置
 // import { UserConfigExport,ConfigEnv } from 'vite';
-import {viteMockServe} from 'vite-plugin-mock';
+import { viteMockServe } from 'vite-plugin-mock';
 
 // https://vite.dev/config/
 // mock配置：command 用于区分是开发环境还是生产环境,mock只能用于开发阶段。
-export default defineConfig(({command})=>{
+export default defineConfig(({ command }) => {
 	return {
 		plugins: [
 			vue(),
@@ -24,7 +24,7 @@ export default defineConfig(({command})=>{
 			// 配置mock插件
 			viteMockServe({
 				mockPath: 'mock',
-				localEnabled: command === 'serve'   // 保证开发阶段可以使用mock接口
+				localEnabled: command === 'serve', // 保证开发阶段可以使用mock接口
 			}),
 		],
 		resolve: {
@@ -48,5 +48,5 @@ export default defineConfig(({command})=>{
 				// },
 			},
 		},
-	}
+	};
 });
