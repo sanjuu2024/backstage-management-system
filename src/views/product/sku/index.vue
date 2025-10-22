@@ -1,5 +1,5 @@
 <template>
-    <h2>skuuuuuuuuu</h2>
+	<h2>skuuuuuuuuu</h2>
 </template>
 
 <script setup lang="ts"></script>

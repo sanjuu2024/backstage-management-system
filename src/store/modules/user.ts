@@ -1,12 +1,13 @@
 // 创建用户相关的小仓库
 import { defineStore } from 'pinia';
-import { reqLogin } from '@/api/user';
+import { reqLogin, reqUserInfo } from '@/api/user';
 import { type loginFormData, type loginResponseData } from '@/api/user/type';
 import { type UserState } from './types/type';
 // import { ElMessage } from "element-plus";
 import { SET_TOKEN, GET_TOKEN } from '@/utils/token';
 // 引入常量路由(貌似一个用户对应一个路由数组会好一些，方便权限管理)
 import { constRoutes } from '@/router/routes';
+import { REMOVE_TOKEN } from '@/utils/token';
 
 export const useUserStore = defineStore('user', {
 	// ?ts类型限定还能这么写...
@@ -14,10 +15,15 @@ export const useUserStore = defineStore('user', {
 		return {
 			// 如果没存过则获得的是null
 			token: GET_TOKEN(), // 用户令牌
-			menuRoutes: constRoutes, // 该用户对应的路由数组
+			menuRoutes: constRoutes, // 该用户对应的路由数组,
+            userInfo:{
+                username: '',
+                avatar: ''
+            }
 		};
 	},
 	actions: {
+        // 用户请求登录
 		async userLogin(data: loginFormData) {
 			let res: loginResponseData = await reqLogin(data);
 			if (res.code === 200) {
@@ -34,5 +40,20 @@ export const useUserStore = defineStore('user', {
 				throw new Error(res.data.message); // 让函数调用完回去组件可以进入catch，打印登录错误的纤细错误信息
 			}
 		},
+        // 获取用户信息
+        async getUserInfo(){
+            let res = await reqUserInfo();
+            if (res.code === 200){
+                this.userInfo.username = res.data.checkUser.username;
+                this.userInfo.avatar = res.data.checkUser.avatar;
+            }
+			else throw new Error(res.code+"");
+        },
+        // 用户退出登录
+        userLogout(){
+            if (!confirm('确认退出登录吗？')) return;
+            this.token = this.userInfo.username = this.userInfo.avatar = '';
+            REMOVE_TOKEN();
+        }
 	},
 });

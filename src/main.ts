@@ -33,6 +33,9 @@ app.use(pinia);
 // 安装批量注册全局组件的自定义插件
 app.use(globalComponent);
 
+// 🍉🍉🍉执行一次permission.ts
+import './permission';
+
 app.mount('#app');
 
-console.log(localStorage.getItem('test)'));
+// console.log(localStorage.getItem('test)'));

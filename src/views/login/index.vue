@@ -57,15 +57,16 @@ export default {
 
 <script setup lang="ts">
 import { User, Lock } from '@element-plus/icons-vue';
-import { reactive, ref, watch, nextTick } from 'vue';
+import { reactive, ref, watch, nextTick, onMounted } from 'vue';
 import { type loginFormData } from '@/api/user/type';
-import { useRouter } from 'vue-router'; // 为了实现编程式路由跳转
+import { useRouter, useRoute } from 'vue-router'; // 为了实现编程式路由跳转和redirect
 import { ElNotification } from 'element-plus';
 import { getTime } from '@/utils/timeStr';
 // 引入小仓库
 import { useUserStore } from '@/store/modules/user';
 let userStore = useUserStore();
 const router = useRouter();
+const route = useRoute();
 
 // 定义变量控制登录按钮是否显示正在加载的圆圈
 let loading = ref(false);
@@ -108,7 +109,7 @@ async function login() {
 			username: loginForm.username,
 			password: loginForm.password,
 		} as loginFormData);
-		router.push('/');
+		router.push({ path: (route.query.redirect as string) || '/' });
 		ElNotification({
 			type: 'success',
 			message: '登录成功',
