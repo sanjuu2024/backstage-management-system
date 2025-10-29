@@ -1,22 +1,24 @@
 // 统一管理项目用户相关的接口
 import request from '@/utils/request';
-import {
-	type loginFormData,
-	type loginResponseData,
-	type userInfoResponseData,
-} from './type';
 
-// 使用 const 对象代替 enum
+// 🍉项目基本重写了
 const API = {
-	LOGIN_URL: '/user/login',
-	USERINFO_URL: '/user/info',
-} as const;
+	LOGIN_URL: '/admin/acl/index/login',
+	USERINFO_URL: '/admin/acl/index/info',
+	LOGOUT_URL: '/admin/acl/index/logout'
+}
 
-// 暴露请求函数
-// 登录接口方法
-export const reqLogin = (data: loginFormData) =>
-	request.post<any, loginResponseData>(API.LOGIN_URL, data);
+// 🍰登录接口
+export const reqLogin = (data:any) => {
+	return request.post<any,any>(API.LOGIN_URL,data);
+}
 
-// 获取用户信息接口方法
-export const reqUserInfo = () =>
-	request.get<any, userInfoResponseData>(API.USERINFO_URL);
+// 🍰获取用户信息接口
+export const reqUserInfo = () => {
+	return request.get<any,any>(API.USERINFO_URL);
+}
+
+// 🍰退出登录接口
+export const reqLogout = () => {
+	return request.post<any,any>(API.LOGOUT_URL);
+}

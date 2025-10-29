@@ -12,4 +12,4 @@ export const GET_TOKEN = (): string | null => {
 // 删
 export const REMOVE_TOKEN = () => {
 	localStorage.removeItem('TOKEN');
-}
+};

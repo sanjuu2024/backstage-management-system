@@ -11,7 +11,10 @@
 		<!-- <button @click="console.log(router);">test</button> -->
 		<el-breadcrumb :separator-icon="ArrowRight">
 			<template v-for="(item, i) in router.matched" :key="item.name">
-				<el-breadcrumb-item v-if="item.name !== 'Layout'" :to="item.path">
+				<el-breadcrumb-item
+					v-if="item.name !== 'Layout'"
+					:to="item.path"
+				>
 					<el-icon>
 						<component :is="item.meta.icon" />
 					</el-icon>

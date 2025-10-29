@@ -5,7 +5,7 @@ export interface UserState {
 	token: string | null;
 	menuRoutes: RouteRecordRaw[];
 	userInfo: {
-		username: string,
-		avatar: string
-	}
+		username: string;
+		avatar: string;
+	};
 }

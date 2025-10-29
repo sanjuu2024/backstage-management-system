@@ -58,7 +58,7 @@ export default {
 <script setup lang="ts">
 import { User, Lock } from '@element-plus/icons-vue';
 import { reactive, ref, watch, nextTick, onMounted } from 'vue';
-import { type loginFormData } from '@/api/user/type';
+// import { type loginFormData } from '@/api/user/type';
 import { useRouter, useRoute } from 'vue-router'; // 为了实现编程式路由跳转和redirect
 import { ElNotification } from 'element-plus';
 import { getTime } from '@/utils/timeStr';
@@ -108,7 +108,7 @@ async function login() {
 		await userStore.userLogin({
 			username: loginForm.username,
 			password: loginForm.password,
-		} as loginFormData);
+		});
 		router.push({ path: (route.query.redirect as string) || '/' });
 		ElNotification({
 			type: 'success',

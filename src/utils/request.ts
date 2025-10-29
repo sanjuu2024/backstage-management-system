@@ -18,7 +18,7 @@ request.interceptors.request.use((config) => {
 
 	// 🔺注意以下这句必须放在请求拦截器中，不能放全局，否则不保证获取最新的数据
 	const userStore = useUserStore();
-	if (userStore.token){
+	if (userStore.token) {
 		config.headers.token = userStore.token;
 	}
 	// 必须返回配置对象否则报错
