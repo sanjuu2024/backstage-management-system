@@ -47,7 +47,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
 					// 除了网速，还有可能是token过期。这里统一认为是token过期。
 					alert('获取信息失败：' + err);
 					await userStore.userLogout(); // token过期先退出登录，然后去到login界面
-					next({ path: '/login',query: {redirect: to.path}});
+					next({ path: '/login', query: { redirect: to.path } });
 				}
 			} else next();
 		}

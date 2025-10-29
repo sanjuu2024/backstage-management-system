@@ -1,5 +1,5 @@
 // 。🍉vite提供了loadEnv方法用于加载对应环境下的变量
-import { defineConfig,loadEnv } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
 const pathResolve = (dir: string) => path.resolve(__dirname, dir);
@@ -14,15 +14,15 @@ import { viteMockServe } from 'vite-plugin-mock';
 // https://vite.dev/config/
 // mock配置：command 用于区分是开发环境还是生产环境,mock只能用于开发阶段。
 // mode 用于区分不同的环境（开发、测试、生产）对应的变量
-export default defineConfig(({ command,mode }) => {
+export default defineConfig(({ command, mode }) => {
 	// 🍉获取各种环境下对应的变量,参数一是defineConfig的参数mode,参数二是项目的根目录(vite的process模块提供了process.cwd())
-	let env = loadEnv(mode,process.cwd());
-	
+	let env = loadEnv(mode, process.cwd());
+
 	// 调试信息：打印环境变量
 	// console.log('当前环境变量：');
 	// console.log('VITE_APP_BASE_API:', env.VITE_APP_BASE_API);
 	// console.log('VITE_SERVE:', env.VITE_SERVE);
-	
+
 	return {
 		plugins: [
 			vue(),
@@ -68,13 +68,17 @@ export default defineConfig(({ command,mode }) => {
 				// 所以不用一个个写如：'/api': {}，可以直接：
 				[env.VITE_APP_BASE_API]: {
 					// 🍰获取数据的服务器地址
-					target: env.VITE_SERVE,   // 🔺🔺🔺写成server了...然后卡大半天怀疑人生...
+					target: env.VITE_SERVE, // 🔺🔺🔺写成server了...然后卡大半天怀疑人生...
 					// 🍰是否需要代理跨域
 					changeOrigin: true,
 					// 🍰路径重写(🔺🔺🔺注意不是`^/${...}`！！！VITE_APP_BASE_API自带`/`来着！！！)
-					rewrite: (path) => path.replace(new RegExp(`^${env.VITE_APP_BASE_API}`), ''),
-				}
-			}
-		}
+					rewrite: (path) =>
+						path.replace(
+							new RegExp(`^${env.VITE_APP_BASE_API}`),
+							'',
+						),
+				},
+			},
+		},
 	};
 });

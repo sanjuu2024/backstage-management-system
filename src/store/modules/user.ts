@@ -7,6 +7,7 @@ import { SET_TOKEN, GET_TOKEN } from '@/utils/token';
 // 引入常量路由(貌似一个用户对应一个路由数组会好一些，方便权限管理)
 import { constRoutes } from '@/router/routes';
 import { REMOVE_TOKEN } from '@/utils/token';
+import type { LoginFormData, LoginResponseData, UserInfoResponseData } from '@/api/user/type';
 
 export const useUserStore = defineStore('user', {
 	// ?ts类型限定还能这么写...
@@ -23,13 +24,12 @@ export const useUserStore = defineStore('user', {
 	},
 	actions: {
 		// 用户请求登录
-		async userLogin(data: any) {
-			let res: any = await reqLogin(data);
-			console.log('登录返回：',res);
+		async userLogin(data: LoginFormData) {
+			// 其实貌似ts会自动推断res的类型的
+			let res: LoginResponseData = await reqLogin(data);
+			console.log('登录返回：', res);
 			if (res.code === 200) {
-				this.token = res.data as string;  
-				// 本地永久存储
-				// localStorage.setItem('TOKEN',this.token);
+				this.token = res.data as string;
 				SET_TOKEN(this.token);
 				// ElMessage.success('登录成功');   // 转为在组件那边用ElNotification了
 				return '登录成功'; // async会把返回结果封装成一个Promise，这里就不用return Promise了，否则就是Promise<Promise<string>>
@@ -40,7 +40,7 @@ export const useUserStore = defineStore('user', {
 		},
 		// 获取用户信息
 		async getUserInfo() {
-			let res = await reqUserInfo();
+			let res: UserInfoResponseData = await reqUserInfo();
 			if (res.code === 200) {
 				this.userInfo.username = res.data.name;
 				this.userInfo.avatar = res.data.avatar;
@@ -54,8 +54,7 @@ export const useUserStore = defineStore('user', {
 				this.token = this.userInfo.username = this.userInfo.avatar = '';
 				REMOVE_TOKEN();
 				return '退出登录成功';
-			}
-			else{
+			} else {
 				return Promise.reject(new Error(res.message));
 			}
 		},
