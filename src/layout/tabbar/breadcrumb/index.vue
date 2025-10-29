@@ -42,7 +42,7 @@ function changeIcon() {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
 .tabbar_left {
 	display: flex;
 	align-items: center;

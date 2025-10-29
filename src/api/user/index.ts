@@ -1,6 +1,10 @@
 // 统一管理项目用户相关的接口
 import request from '@/utils/request';
-import type { LoginFormData, LoginResponseData, UserInfoResponseData } from './type';
+import type {
+	LoginFormData,
+	LoginResponseData,
+	UserInfoResponseData,
+} from './type';
 
 // 🍉基本重写了
 const API = {

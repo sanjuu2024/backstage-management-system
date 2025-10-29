@@ -71,7 +71,7 @@ async function logout() {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
 .tabbar_right {
 	display: flex;
 	align-items: center;

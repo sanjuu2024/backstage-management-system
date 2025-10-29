@@ -29,7 +29,7 @@ watch(
 );
 </script>
 
-<style>
+<style scoped lang="scss">
 .fade-enter-from {
 	opacity: 0;
 	transform: scale(0);

@@ -7,7 +7,11 @@ import { SET_TOKEN, GET_TOKEN } from '@/utils/token';
 // 引入常量路由(貌似一个用户对应一个路由数组会好一些，方便权限管理)
 import { constRoutes } from '@/router/routes';
 import { REMOVE_TOKEN } from '@/utils/token';
-import type { LoginFormData, LoginResponseData, UserInfoResponseData } from '@/api/user/type';
+import type {
+	LoginFormData,
+	LoginResponseData,
+	UserInfoResponseData,
+} from '@/api/user/type';
 
 export const useUserStore = defineStore('user', {
 	// ?ts类型限定还能这么写...
