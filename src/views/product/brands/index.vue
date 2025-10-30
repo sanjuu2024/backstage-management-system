@@ -2,25 +2,57 @@
 	<!-- 🍉加一个div标签是因为警告说根节点标签为多个的不能transition动画渲染。 -->
 	<div>
 		<el-card shadow="hover">
-			<el-button type="primary" size="default" icon="Plus" @click="addBrand" style="display: inline">
+			<el-button
+				type="primary"
+				size="default"
+				icon="Plus"
+				@click="addBrand"
+				style="display: inline"
+			>
 				添加品牌
 			</el-button>
 			<el-table border stripe :data="brandsArr" style="margin: 10px 0px">
-				<el-table-column label="序号" align="center" width="80px;" type="index"></el-table-column>
-				<el-table-column label="品牌名称" align="center" prop="tmName"></el-table-column>
+				<el-table-column
+					label="序号"
+					align="center"
+					width="80px;"
+					type="index"
+				></el-table-column>
+				<el-table-column
+					label="品牌名称"
+					align="center"
+					prop="tmName"
+				></el-table-column>
 				<el-table-column label="品牌LOGO" align="center">
 					<template #="{ row, $index }">
-						<img :src="row.logoUrl" height="100px;" alt="图片缺失" />
+						<img
+							:src="row.logoUrl"
+							height="100px;"
+							alt="图片缺失"
+						/>
 					</template>
 				</el-table-column>
 				<el-table-column label="品牌操作" align="center">
 					<template #="{ row }">
-						<el-button type="warning" icon="Edit" @click="updateBrand(row)"></el-button>
-						
+						<el-button
+							type="warning"
+							icon="Edit"
+							@click="updateBrand(row)"
+						></el-button>
+
 						<!-- 给删除按钮加一个气泡确认框 -->
-						<el-popconfirm title="确认删除该品牌？" width="200" @confirm="deleteBrand(row.id)" icon="Delete" icon-color="red">
+						<el-popconfirm
+							title="确认删除该品牌？"
+							width="200"
+							@confirm="deleteBrand(row.id)"
+							icon="Delete"
+							icon-color="red"
+						>
 							<template #reference>
-								<el-button type="danger" icon="Delete"></el-button>
+								<el-button
+									type="danger"
+									icon="Delete"
+								></el-button>
 							</template>
 						</el-popconfirm>
 					</template>
@@ -36,22 +68,44 @@
 		-->
 			<!-- 🔺🔺🔺注意都是v-model双向绑定的！！！ -->
 			<br />
-			<el-pagination v-model:current-page="currentPage" v-model:page-size="limit" :background="true"
-				layout="prev, pager, next, jumper, ->, sizes, total" :total="total" :pager-count="pagerCount"
-				:page-sizes="[3, 5, 7, 9]" @current-change="changeCurrentPage" @size-change="getExistingBrands" />
+			<el-pagination
+				v-model:current-page="currentPage"
+				v-model:page-size="limit"
+				:background="true"
+				layout="prev, pager, next, jumper, ->, sizes, total"
+				:total="total"
+				:pager-count="pagerCount"
+				:page-sizes="[3, 5, 7, 9]"
+				@current-change="changeCurrentPage"
+				@size-change="getExistingBrands"
+			/>
 		</el-card>
 
 		<!-- 🍉对话框 -->
-		<el-dialog v-model="dialogFormVisible" :title="st == 1 ? '添加品牌' : '修改品牌'" width="500">
-			<el-form :model="form" :rules="rules" ref="theform" style="width:80%;" label-width="auto" label-position="right">
+		<el-dialog
+			v-model="dialogFormVisible"
+			:title="st == 1 ? '添加品牌' : '修改品牌'"
+			width="500"
+		>
+			<el-form
+				:model="form"
+				:rules="rules"
+				ref="theform"
+				style="width: 80%"
+				label-width="auto"
+				label-position="right"
+			>
 				<el-form-item label="品牌名称" prop="tmName">
-					<el-input v-model="form.tmName" placeholder="请输入品牌名称"></el-input>
+					<el-input
+						v-model="form.tmName"
+						placeholder="请输入品牌名称"
+					></el-input>
 				</el-form-item>
 
 				<!-- show-file-list是显示上传过的文件名都显示出来 -->
 				<el-form-item label="品牌LOGO" prop="logoUrl">
-					<el-upload 
-						class="avatar-uploader" 
+					<el-upload
+						class="avatar-uploader"
 						action="/api/admin/product/fileUpload"
 						:headers="uploadHeaders"
 						:show-file-list="false"
@@ -60,17 +114,27 @@
 						:on-success="handleAvatarSuccess"
 						:multiple="false"
 					>
-						<img v-if="form.logoUrl" :src="form.logoUrl" class="avatar" />
+						<img
+							v-if="form.logoUrl"
+							:src="form.logoUrl"
+							class="avatar"
+						/>
 						<el-icon v-else class="avatar-uploader-icon">
 							<Plus />
 						</el-icon>
 					</el-upload>
 				</el-form-item>
 			</el-form>
-			
+
 			<template #footer>
 				<el-button type="danger" @click="cancel">取消</el-button>
-				<el-button type="primary" @click="confirm" :disabled="!validated">确定</el-button>
+				<el-button
+					type="primary"
+					@click="confirm"
+					:disabled="!validated"
+				>
+					确定
+				</el-button>
 			</template>
 		</el-dialog>
 	</div>
@@ -78,12 +142,17 @@
 
 <script setup lang="ts">
 import { ref, onMounted, nextTick, watch, reactive, computed } from 'vue';
-import { reqExistingBrands, reqAddBrand, reqUpdateBrand, reqDeleteBrand } from '@/api/product/brands';
+import {
+	reqExistingBrands,
+	reqAddBrand,
+	reqUpdateBrand,
+	reqDeleteBrand,
+} from '@/api/product/brands';
 import type {
 	Brand,
 	ExistingBrandsResponseData,
 } from '@/api/product/brands/type';
-import { useUserStore } from '@/store/modules/user';   // 为了获取token让el-upload发送请求时带上
+import { useUserStore } from '@/store/modules/user'; // 为了获取token让el-upload发送请求时带上
 import { ElMessage, type UploadProps } from 'element-plus';
 
 // 获取用户store
@@ -91,7 +160,7 @@ const userStore = useUserStore();
 
 // 上传文件的请求头
 const uploadHeaders = computed(() => ({
-	Token: userStore.token || ''  // 注意：使用大写的 'Token'
+	Token: userStore.token || '', // 注意：使用大写的 'Token'
 }));
 
 // 当前页码
@@ -114,7 +183,7 @@ let st = ref<number>(0);
 let form = reactive<Brand>({
 	id: 0,
 	tmName: '',
-	logoUrl: ''
+	logoUrl: '',
 });
 // 表单实例
 let theform = ref();
@@ -140,7 +209,7 @@ watch(
 	() => nextTick(() => checkFormValidation()),
 	{
 		deep: true,
-		immediate: true
+		immediate: true,
 	},
 );
 
@@ -154,20 +223,20 @@ const rules = {
 			message: '品牌名称长度应该在1到20个字符之间',
 			// trigger: 'blur'
 			// 实际上因为下面写了一个watch，所以trigger无论写什么实际都类似change的效果。
-		}
+		},
 	],
 	logoUrl: [
 		{
 			required: true,
 			message: '品牌LOGO图片不能为空',
 			// trigger: 'change'
-		}
-	]
+		},
+	],
 };
 
 // 获取品牌数据来呈现在页面上
 async function getExistingBrands() {
-	console.log("currentPage:", currentPage.value, " limit:", limit.value);
+	console.log('currentPage:', currentPage.value, ' limit:', limit.value);
 	let res: ExistingBrandsResponseData = await reqExistingBrands(
 		currentPage.value,
 		limit.value,
@@ -191,12 +260,13 @@ function changeCurrentPage(newPage: number) {
 }
 
 // 增改删品牌
-function addBrand() {   // 点击添加之后，弹出对话框。
+function addBrand() {
+	// 点击添加之后，弹出对话框。
 	form.tmName = form.logoUrl = '';
 	st.value = 1;
 	nextTick(() => {
 		dialogFormVisible.value = true;
-		theform.value?.resetFields();  // 重置表单校验状态(要不然第二次点击添加的时候一上来就会有两条message警告表单格式了。)
+		theform.value?.resetFields(); // 重置表单校验状态(要不然第二次点击添加的时候一上来就会有两条message警告表单格式了。)
 	});
 }
 
@@ -207,19 +277,18 @@ function updateBrand(data: Brand) {
 }
 
 async function deleteBrand(id: number) {
-	let res:any = await reqDeleteBrand(id);
+	let res: any = await reqDeleteBrand(id);
 	console.log(res);
-	if (res.code == 200){
+	if (res.code == 200) {
 		ElMessage.success('品牌删除成功');
-		getExistingBrands();  // 重新获取品牌列表
-	}
-	else{
+		getExistingBrands(); // 重新获取品牌列表
+	} else {
 		ElMessage.error('品牌删除失败：' + res.message);
 	}
 }
 
 // 对话框取消
-function cancel(){
+function cancel() {
 	dialogFormVisible.value = false;
 	// 清除验证状态，避免下次打开对话框时显示之前的验证错误
 	nextTick(() => {
@@ -228,28 +297,26 @@ function cancel(){
 }
 
 // 对话框确认
-async function confirm(){   // 1:Add,2:Update
+async function confirm() {
+	// 1:Add,2:Update
 	dialogFormVisible.value = false;
-	
-	if (st.value == 1){
-		let res:any = await reqAddBrand(form);
-		if (res.code == 200){
+
+	if (st.value == 1) {
+		let res: any = await reqAddBrand(form);
+		if (res.code == 200) {
 			ElMessage.success('品牌添加成功');
-			getExistingBrands();  // 重新获取品牌列表
-		}
-		else{
+			getExistingBrands(); // 重新获取品牌列表
+		} else {
 			ElMessage.error('品牌添加失败：' + res.message);
 		}
-	}
-	else{
-		let res:any = await reqUpdateBrand(form);
-		if (res.code == 200){
+	} else {
+		let res: any = await reqUpdateBrand(form);
+		if (res.code == 200) {
 			ElMessage.success('品牌修改成功');
-			getExistingBrands();  // 重新获取品牌列表
-		}
-		else{
+			getExistingBrands(); // 重新获取品牌列表
+		} else {
 			ElMessage.error('品牌修改失败：' + res.message);
-		}	
+		}
 	}
 }
 
@@ -258,57 +325,62 @@ async function confirm(){   // 1:Add,2:Update
 // rawFile是上传的原始文件对象
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 	console.log(rawFile);
-	if (rawFile.type !== 'image/jpeg' && rawFile.type !== 'image/png' && rawFile.type !== 'image/jpg' && rawFile.type !== 'image/gif') {
+	if (
+		rawFile.type !== 'image/jpeg' &&
+		rawFile.type !== 'image/png' &&
+		rawFile.type !== 'image/jpg' &&
+		rawFile.type !== 'image/gif'
+	) {
 		ElMessage.error('上传文件格式必须是 JPG/PNG/JPG/GIF 格式之一。');
 		return false;
-	} else if (rawFile.size / 1024 / 1024 > 2) {   // 最大2MB
+	} else if (rawFile.size / 1024 / 1024 > 2) {
+		// 最大2MB
 		ElMessage.error('上传文件大小不能超过 2MB。');
 		return false;
 	}
 	return true;
-}
+};
 
 // 图片上传成功后触发钩子函数
 const handleAvatarSuccess: UploadProps['onSuccess'] = (res, file) => {
 	console.log(res);
 	if (res.code === 200) {
-		form.logoUrl = res.data;  // 假设后端返回的图片URL在res.data.url中
+		form.logoUrl = res.data; // 假设后端返回的图片URL在res.data.url中
 		ElMessage.success('图片上传成功');
 	} else {
 		ElMessage.error('图片上传失败: ' + res.message);
 	}
 };
-
 </script>
 
 <style scoped>
 .avatar-uploader .avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
+	width: 178px;
+	height: 178px;
+	display: block;
 }
 </style>
 
 <!-- 🔺这里照搬官网的，因为el-upload是另一个组件，所以如果这部分style写成scoped就没作用了！ -->
 <style>
 .avatar-uploader .el-upload {
-  border: 1px dashed var(--el-border-color);
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: var(--el-transition-duration-fast);
+	border: 1px dashed var(--el-border-color);
+	border-radius: 6px;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	transition: var(--el-transition-duration-fast);
 }
 
 .avatar-uploader .el-upload:hover {
-  border-color: var(--el-color-primary);
+	border-color: var(--el-color-primary);
 }
 
 .el-icon.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  text-align: center;
+	font-size: 28px;
+	color: #8c939d;
+	width: 178px;
+	height: 178px;
+	text-align: center;
 }
 </style>
