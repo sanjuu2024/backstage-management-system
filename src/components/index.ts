@@ -6,7 +6,7 @@ import type { App } from 'vue';
 // 引入element-plus提供全部图标组件(虽然性能上来说不推荐，但是有时候网络不好自动引入会导致图标加载不出来。用全局注册是为了加载不出错。)
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 // 全局组件们的对象
-const allGlobalComponent = { SvgIcon, Pagination, Category};
+const allGlobalComponent = { SvgIcon, Pagination, Category };
 // 对外暴露插件对象们
 export default {
 	install(app: App) {
