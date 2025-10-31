@@ -69,7 +69,7 @@
 						<el-input
 							placeholder="请输入属性名称"
 							v-model="attrParams.attrName"
-                            ref="getNewAttrName"
+							ref="getNewAttrName"
 						></el-input>
 					</el-form-item>
 				</el-form>
@@ -100,7 +100,7 @@
 						prop="valueName"
 					>
 						<template #="{ row, $index }">
-                            <!-- :ref，每次有一个el-input出现时候都会触发这个函数。 -->
+							<!-- :ref，每次有一个el-input出现时候都会触发这个函数。 -->
 							<!-- <el-input
 								v-show="row.flag"
 								@blur="handleBlur(row, $index)"
@@ -115,36 +115,31 @@
 							>
 								{{ row.valueName }}
 							</div> -->
-                            <!-- 因为要加上自动聚焦的功能，而且用的是ref，所以不能是v-show了，要v-if才会在blur换为div的时候把input实例从数组移除(虽然性能堪忧啊...) -->
-                            <el-input
+							<!-- 因为要加上自动聚焦的功能，而且用的是ref，所以不能是v-show了，要v-if才会在blur换为div的时候把input实例从数组移除(虽然性能堪忧啊...) -->
+							<el-input
 								v-if="row.flag"
 								@blur="handleBlur(row, $index)"
 								v-model="row.valueName"
 								placeholder="请输入属性值名称"
-								:ref="(vc:any)=>inputArr[$index] = vc"
+								:ref="(vc: any) => (inputArr[$index] = vc)"
 							></el-input>
-							<div
-                                v-else
-								@click="row.flag = true"
-								class="view"
-							>
+							<div v-else @click="row.flag = true" class="view">
 								{{ row.valueName }}
 							</div>
 						</template>
 					</el-table-column>
 
-					<el-table-column
-						label="操作"
-						align="center"
-					>
-                    <template #="{ row, $index }">
-                        <el-button
-                            type="danger"
-                            icon="Delete"
-                            @click="attrParams.attrValueList.splice($index, 1)"
-                        ></el-button>
-                    </template>
-                    </el-table-column>
+					<el-table-column label="操作" align="center">
+						<template #="{ row, $index }">
+							<el-button
+								type="danger"
+								icon="Delete"
+								@click="
+									attrParams.attrValueList.splice($index, 1)
+								"
+							></el-button>
+						</template>
+					</el-table-column>
 				</el-table>
 				<el-button
 					type="primary"
@@ -163,7 +158,10 @@
 </template>
 
 <script setup lang="ts">
-import { reqAddOrUpdateAttr, reqDeleteAttr, onBeforeUnmount } from '@/api/product/attr';
+import {
+	reqAddOrUpdateAttr,
+	reqDeleteAttr,
+} from '@/api/product/attr';
 import type {
 	AttrResponseData,
 	Attr,
@@ -172,13 +170,13 @@ import type {
 import { useCategoryStore } from '@/store/modules/category';
 import { ElMessage } from 'element-plus';
 import { storeToRefs } from 'pinia';
-import { nextTick, reactive, ref, watch } from 'vue';
+import { nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue';
 
 const categoryStore = useCategoryStore();
 
 let { c3Id } = storeToRefs(categoryStore);
 let attrList = reactive<Attr[]>([]);
-let scene = ref<number>(0);
+let scene = ref<number>(0);   // 0表示查看属性列表，1表示添加或修改属性
 let attrParams = reactive<Attr>({
 	attrName: '',
 	attrValueList: [],
@@ -216,9 +214,9 @@ function addAttr() {
 	attrParams.attrName = '';
 	attrParams.attrValueList = [];
 	attrParams.categoryId = c3Id.value;
-    nextTick(() => {
-        getNewAttrName.value?.focus();
-    });
+	nextTick(() => {
+		getNewAttrName.value?.focus();
+	});
 }
 
 // 点击了属性行后面的修改按钮(🔺🔺🔺必须是深拷贝！！！否则修改到一半点击取消没用的，还是修改了)
@@ -228,9 +226,9 @@ function updateAttr(row: Attr) {
 	attrParams.id = row.id;
 	attrParams.attrName = row.attrName;
 	// attrParams.attrValueList = row.attrValueList;   // ❌浅拷贝
-    // Object.assign(attrParams.attrValueList, row.attrValueList);   // ❌这个也是浅拷贝
-    // ✅这才是深拷贝：
-    attrParams.attrValueList = JSON.parse(JSON.stringify(row.attrValueList));
+	// Object.assign(attrParams.attrValueList, row.attrValueList);   // ❌这个也是浅拷贝
+	// ✅这才是深拷贝：
+	attrParams.attrValueList = JSON.parse(JSON.stringify(row.attrValueList));
 	attrParams.categoryId = c3Id.value;
 }
 
@@ -251,8 +249,8 @@ async function addAttrValueRow() {
 		valueName: '',
 		flag: true,
 	} as AttrValue);
-    await nextTick();   // 🍉伟大的nextTick()！！！必加！
-    inputArr[inputArr.length - 1]?.focus();
+	await nextTick(); // 🍉伟大的nextTick()！！！必加！
+	inputArr[inputArr.length - 1]?.focus();
 }
 
 // 点击了"保存"按钮
@@ -282,7 +280,7 @@ async function saveAttr() {
 	if (res.code === 200) {
 		ElMessage.success(`${attrParams.id ? '修改' : '添加'}属性成功！`);
 		scene.value = 0;
-        inputArr.length = 0; // 清空输入框引用数组
+		inputArr.length = 0; // 清空输入框引用数组
 
 		getAttr2();
 	} else {
@@ -323,7 +321,7 @@ function handleBlur(row: AttrValue, idx: number) {
 // 最后路由跳转离开前，销毁仓库暂存的c1Id等数据
 // 而且也刚好方便category组件在其他组件内复用。
 onBeforeUnmount(() => {
-    categoryStore.$reset();   // 🍉好用的原生api！
+	categoryStore.$reset(); // 🍉好用的原生api！
 });
 </script>
 
