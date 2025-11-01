@@ -66,7 +66,7 @@ import { onMounted } from 'vue';
 import { defineProps } from 'vue';
 const categoryStore = useCategoryStore();
 let { l1, l2, l3, c1Id, c2Id, c3Id } = storeToRefs(categoryStore);
-defineProps(['scene']);   // scene=0表示查看SPU，此时该三级菜单才可以选择
+defineProps(['scene']); // scene=0表示查看SPU，此时该三级菜单才可以选择
 
 onMounted(() => {
 	categoryStore.getC1();

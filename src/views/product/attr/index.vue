@@ -158,10 +158,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-	reqAddOrUpdateAttr,
-	reqDeleteAttr,
-} from '@/api/product/attr';
+import { reqAddOrUpdateAttr, reqDeleteAttr } from '@/api/product/attr';
 import type {
 	AttrResponseData,
 	Attr,
@@ -176,7 +173,7 @@ const categoryStore = useCategoryStore();
 
 let { c3Id } = storeToRefs(categoryStore);
 let attrList = reactive<Attr[]>([]);
-let scene = ref<number>(0);   // 0表示查看属性列表，1表示添加或修改属性
+let scene = ref<number>(0); // 0表示查看属性列表，1表示添加或修改属性
 let attrParams = reactive<Attr>({
 	attrName: '',
 	attrValueList: [],
