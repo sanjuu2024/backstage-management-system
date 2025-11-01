@@ -136,3 +136,8 @@ export interface SkuData {
 	skuAttrValueList: skuAttrValue[]; // 平台属性
 	skuSaleAttrValueList: skuSaleAttrValue[]; // 销售属性
 }
+
+// 根据SPU的id获取其所有SKU返回数据的ts类型
+export interface SkuInfoListResponseData extends ResponseData {
+	data: SkuData[];
+}

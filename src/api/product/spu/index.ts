@@ -5,6 +5,7 @@ import type {
 	AllBrandsResponseData,
 	AllSaleAttrResponseData,
 	SkuData,
+	SkuInfoListResponseData,
 	SpuData,
 	SpuImgListResponseData,
 	SpuResponseData,
@@ -27,8 +28,12 @@ const API = {
 	ADD_SPU_URL: '/admin/product/saveSpuInfo',
 	// 更新一个SPU
 	UPDATE_SPU_URL: '/admin/product/updateSpuInfo',
+	// 删除一个SPU
+	DELETE_SPU_URL: '/admin/product/deleteSpu/', // {spuId}
 	// 添加SKU
 	ADD_SKU: '/admin/product/saveSkuInfo',
+	// 根据SPU的id获取其所有SKU
+	SKU_INFO_URL: '/admin/product/findBySpuId/', // {spuId}
 };
 
 // 获取已有SPU分页列表
@@ -88,6 +93,19 @@ export const reqUpdateSpu = async (data: SpuData) => {
 	return await request.post<any, any>(API.UPDATE_SPU_URL, data);
 };
 
+// 删除SPU
+export const reqDeleteSpu = async (spuId: number) => {
+	return await request.delete<any, any>(API.DELETE_SPU_URL + spuId);
+};
+
+// 添加SKU
 export const reqAddSku = async (data: SkuData) => {
 	return await request.post<SkuData, any>(API.ADD_SKU, data);
+};
+
+// 根据SPU的id获取其所有SKU
+export const reqSkuInfoList = async (spuId: number) => {
+	return await request.get<any, SkuInfoListResponseData>(
+		API.SKU_INFO_URL + spuId,
+	);
 };

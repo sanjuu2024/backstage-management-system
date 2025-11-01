@@ -193,6 +193,8 @@ async function init(row: SpuData) {
 	theSku.category3Id = row.category3Id;
 	theSku.spuID = row.id as number;
 	theSku.tmId = row.tmId as number;
+	// 初始化清零
+	theSku.skuName = theSku.skuDesc = theSku.price = theSku.weight = '';
 
 	// 图片列表
 	let res = await reqSpuImgList(row.id as number);
@@ -237,10 +239,6 @@ function handleChooseImg(row: SpuImg) {
 function handleSelectImg(selection: any, row: SpuImg) {
 	imgTable.value.clearSelection();
 	imgTable.value.toggleRowSelection(row);
-	if (selection.length === 0) {
-		theSku.skuDefaultImg = '';
-		return;
-	}
 	theSku.skuDefaultImg = row.imgUrl;
 }
 
