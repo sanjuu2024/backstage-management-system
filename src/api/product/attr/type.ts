@@ -34,6 +34,7 @@ export interface Attr {
 	categoryId: number | string;
 	categoryLevel: number;
 	attrValueList: AttrValue[];
+	attrIdAndValueId?: string; // 用来给SPU中的skuForm收集数据
 }
 
 // 请求属性和属性值返回的数据ts类型

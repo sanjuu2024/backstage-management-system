@@ -53,6 +53,7 @@
 								type="primary"
 								icon="Plus"
 								title="添加SKU"
+								@click="addSku(row)"
 							></el-button>
 							<el-button
 								type="warning"
@@ -99,7 +100,11 @@
 
 		<!-- scene = 2,添加SKU -->
 		<div v-show="scene === 2" style="margin: 10px 0">
-			<SkuForm />
+			<SkuForm
+				ref="skuForm"
+				@change-scene="scene = 0"
+				:getExistingSpu="getExistingSpu"
+			/>
 		</div>
 	</div>
 </template>
@@ -129,8 +134,9 @@ let total = ref<number>(0);
 // spu列表
 let spuList = ref<SpuData[]>([]);
 
-// 子组件SpuForm实例
+// 子组件spuForm和skuForm实例
 let spuForm = ref<InstanceType<typeof SpuForm>>();
+let skuForm = ref<InstanceType<typeof SkuForm>>();
 
 watch(c3Id, () => {
 	if (c3Id.value) {
@@ -173,6 +179,12 @@ function updateSpu(row: SpuData) {
 	scene.value = 1;
 	// 🔺调用子组件实例身上的方法获取完整已有的spu的数据
 	spuForm.value?.init(row);
+}
+
+// 点击添加按钮（“添加SKU”）
+function addSku(row: SpuData) {
+	scene.value = 2;
+	skuForm.value?.init(row);
 }
 </script>
 

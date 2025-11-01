@@ -4,6 +4,7 @@ import request from '@/utils/request';
 import type {
 	AllBrandsResponseData,
 	AllSaleAttrResponseData,
+	SkuData,
 	SpuData,
 	SpuImgListResponseData,
 	SpuResponseData,
@@ -26,6 +27,8 @@ const API = {
 	ADD_SPU_URL: '/admin/product/saveSpuInfo',
 	// 更新一个SPU
 	UPDATE_SPU_URL: '/admin/product/updateSpuInfo',
+	// 添加SKU
+	ADD_SKU: '/admin/product/saveSkuInfo',
 };
 
 // 获取已有SPU分页列表
@@ -83,4 +86,8 @@ export const reqAddSpu = async (data: SpuData) => {
 // 更新SPU
 export const reqUpdateSpu = async (data: SpuData) => {
 	return await request.post<any, any>(API.UPDATE_SPU_URL, data);
+};
+
+export const reqAddSku = async (data: SkuData) => {
+	return await request.post<SkuData, any>(API.ADD_SKU, data);
 };
