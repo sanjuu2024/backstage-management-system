@@ -4,11 +4,18 @@
 		<el-card style="height: 70px">
 			<el-form inline class="form">
 				<el-form-item label="用户名">
-					<el-input placeholder="请输入搜索用户名"></el-input>
+					<el-input
+						placeholder="请输入搜索用户名"
+						v-model="keyword"
+					></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary">搜索</el-button>
-					<el-button type="default">重置</el-button>
+					<el-button type="primary" @click="searchUser">
+						搜索
+					</el-button>
+					<el-button type="default" @click="resetSearch">
+						重置
+					</el-button>
 				</el-form-item>
 			</el-form>
 		</el-card>
@@ -305,6 +312,9 @@ let checkAll = ref<boolean>(false);
 let isIndeterminate = ref<boolean>(false); // 不确定状态
 let checkedRoles = ref<number[]>([]);
 
+// 搜索相关
+let keyword = ref<string>('');
+
 // 获取用户列表
 async function getUserList() {
 	let res: UserResponseData = await reqAllUser(
@@ -467,7 +477,7 @@ function handleSelectionChange(val: UserData[]) {
 
 // 判断当前行是否可选（即能否作为批量删除的用户之一）
 function checkSelectable(row: UserData) {
-	console.log('row: ', row);
+	// console.log('row: ', row);
 	if (row?.username === userStore.userInfo.username) return false;
 	return true;
 }
@@ -534,6 +544,27 @@ const handleCheckedRolesChange = (value: CheckboxValueType[]) => {
 	isIndeterminate.value =
 		checkedCount > 0 && checkedCount < roleForm.allRolesList.length;
 };
+
+// 点击“搜索”按钮
+async function searchUser() {
+	let res: UserResponseData = await reqAllUser(
+		currentPage.value,
+		pageSize.value,
+		keyword.value,
+	);
+	if (res.code === 200) {
+		ElMessage.success('搜索成功~');
+		userList.value = res.data.records;
+	} else {
+		ElMessage.error('搜索失败：' + res.message);
+	}
+}
+
+// 点击“重置”按钮
+function resetSearch() {
+	window.location.reload();
+	// 或者把keyword置空，以及正常请求一次userList就行。
+}
 </script>
 
 <style lang="css" scoped>

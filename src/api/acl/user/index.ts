@@ -22,8 +22,17 @@ const API = {
 };
 
 // 获取用户数据分页列表
-export const reqAllUser = async (page: number, limit: number) => {
-	return await request.get<any, any>(API.ALL_USER_URL + `${page}/${limit}`);
+export const reqAllUser = async (
+	page: number,
+	limit: number,
+	keyword?: string,
+) => {
+	// console.log('keyword: ',keyword,'判断：',keyword ? '?keyword='+keyword : '');
+	return await request.get<any, any>(
+		API.ALL_USER_URL +
+			`${page}/${limit}` +
+			`${keyword ? '?username=' + keyword : ''}`,
+	);
 };
 
 // 新增用户
