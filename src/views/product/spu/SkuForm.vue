@@ -291,4 +291,10 @@ async function handleSaveSku() {
 }
 </script>
 
-<style></style>
+<style scoped lang="scss">
+:deep(.el-table__header-wrapper) {
+	.el-checkbox {
+		display: none !important;
+	}
+}
+</style>
