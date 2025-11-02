@@ -47,5 +47,5 @@ export const reqAddOrUpdateAttr = (data: Attr) => {
 
 // 删除属性
 export const reqDeleteAttr = (attrId: number) => {
-	return request.delete(API.DELETE_ATTR_URL + attrId);
+	return request.delete<any, any>(API.DELETE_ATTR_URL + attrId);
 };

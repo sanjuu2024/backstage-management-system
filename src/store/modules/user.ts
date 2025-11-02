@@ -52,7 +52,7 @@ export const useUserStore = defineStore('user', {
 		},
 		// 用户退出登录
 		async userLogout() {
-			if (!confirm('确认退出登录吗？')) return;
+			// if (!confirm('确认退出登录吗？')) return;
 			let res = await reqLogout();
 			if (res.code === 200) {
 				this.token = this.userInfo.username = this.userInfo.avatar = '';
