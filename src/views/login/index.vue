@@ -72,8 +72,8 @@ const route = useRoute();
 let loading = ref(false);
 let loginForms = ref();
 let loginForm = reactive({
-	username: 'admin',
-	password: '111111',
+	username: '',
+	password: '',
 });
 let validated = ref(false);
 
