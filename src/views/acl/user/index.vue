@@ -34,6 +34,7 @@
 					type="selection"
 					align="center"
 					width="80px"
+					:selectable="checkSelectable"
 				></el-table-column>
 				<el-table-column
 					type="index"
@@ -73,6 +74,7 @@
 							icon="User"
 							title="分配角色"
 							size="small"
+							@click="setRole(row)"
 						>
 							分配角色
 						</el-button>
@@ -123,6 +125,7 @@
 		/>
 
 		<!-- 添加用户时表单以抽屉形式出现(其实对话框更好啊抽屉是懒渲染好麻烦啊喂...当练习一下抽屉吧) -->
+		<!-- 居然不封装嘛...... -->
 		<el-drawer
 			v-model="userDrawerVisible"
 			resizable
@@ -178,6 +181,51 @@
 				</el-button>
 			</template>
 		</el-drawer>
+
+		<!-- 抽屉形式显示分配角色 -->
+		<el-drawer v-model="roleDrawerVisible" resizable direction="rtl">
+			<template #title>
+				<h3>分配角色</h3>
+			</template>
+			<template #default>
+				<el-form>
+					<el-form-item label="用户姓名" prop="role">
+						<el-input
+							v-model="roleForm.username"
+							disabled
+						></el-input>
+					</el-form-item>
+					<el-form-item label="职位列表">
+						<div>
+							<el-checkbox
+								v-model="checkAll"
+								:indeterminate="isIndeterminate"
+								@change="handleCheckAllChange"
+							>
+								全选
+							</el-checkbox>
+							<el-checkbox-group
+								v-model="checkedRoles"
+								@change="handleCheckedRolesChange"
+							>
+								<el-checkbox
+									v-for="(role, idx) in roleForm.allRolesList"
+									:key="role.id"
+									:label="role.roleName"
+									:value="role.id"
+								></el-checkbox>
+							</el-checkbox-group>
+						</div>
+					</el-form-item>
+				</el-form>
+			</template>
+			<template #footer>
+				<el-button @click="roleDrawerVisible = false">取消</el-button>
+				<el-button type="primary" @click="confirmRoleForm">
+					确定
+				</el-button>
+			</template>
+		</el-drawer>
 	</div>
 </template>
 
@@ -186,14 +234,19 @@ import {
 	reqAddUser,
 	reqAllUser,
 	reqDeleteUser,
+	reqDeleteUsers,
+	reqGetRole,
+	reqSetRole,
 	reqUpdateUser,
 } from '@/api/acl/user';
 import type {
 	ResponseData,
+	RoleData,
 	UserData,
-	UserResponseDate,
+	UserResponseData,
+	UserRoleResponseData,
 } from '@/api/acl/user/type';
-import { ElMessage } from 'element-plus';
+import { ElMessage, type CheckboxValueType } from 'element-plus';
 import { nextTick, onMounted, reactive, ref, watch } from 'vue';
 import { useUserStore } from '@/store/modules/user';
 
@@ -226,7 +279,7 @@ let drawerKey = ref<number>(0);
 let userList = ref<UserData[]>([]);
 
 // 选中用户列表
-let selectedUsers = ref<UserData[]>([]);
+let selectedUsers = ref<number[]>([]);
 
 // 修改前存一下用户名和昵称
 let updatingUserName = ref<string>('');
@@ -236,9 +289,25 @@ let updatingName = ref<string>('');
 let theUserForm = ref();
 let validated = ref<boolean>(false);
 
+// 控制分配角色抽屉显示隐藏
+let roleDrawerVisible = ref<boolean>(false);
+
+// 分配角色表单数据
+let roleForm = reactive<{
+	allRolesList: RoleData[];
+	assignRoles: RoleData[];
+	username: string;
+	userId: number;
+}>({ allRolesList: [], assignRoles: [], username: '', userId: 0 });
+
+// 角色复选框相关
+let checkAll = ref<boolean>(false);
+let isIndeterminate = ref<boolean>(false); // 不确定状态
+let checkedRoles = ref<number[]>([]);
+
 // 获取用户列表
 async function getUserList() {
-	let res: UserResponseDate = await reqAllUser(
+	let res: UserResponseData = await reqAllUser(
 		currentPage.value,
 		pageSize.value,
 	);
@@ -391,11 +460,80 @@ async function confirmUserForm() {
 
 // 监听多选框变化
 function handleSelectionChange(val: UserData[]) {
-	selectedUsers.value = val;
+	selectedUsers.value = val.map((user) => {
+		return user.id as number;
+	});
+}
+
+// 判断当前行是否可选（即能否作为批量删除的用户之一）
+function checkSelectable(row: UserData) {
+	console.log('row: ', row);
+	if (row?.username === userStore.userInfo.username) return false;
+	return true;
 }
 
 // 批量删除用户
-function deleteUsers() {}
+async function deleteUsers() {
+	if (!selectedUsers.value) return;
+	let res: any = await reqDeleteUsers(selectedUsers.value);
+	if (res.code === 200) {
+		ElMessage.success('批量删除用户成功');
+		getUserList();
+	} else {
+		ElMessage.error('批量删除用户失败：' + res.message);
+	}
+}
+
+// 点击“分配角色”按钮
+async function setRole(row: UserData) {
+	roleDrawerVisible.value = true;
+	checkAll.value = false;
+	isIndeterminate.value = false;
+	roleForm.username = row.username;
+	roleForm.userId = row.id as number;
+	let res: UserRoleResponseData = await reqGetRole(row.id as number);
+	if (res.code === 200) {
+		Object.assign(roleForm, res.data);
+		checkedRoles.value = roleForm.assignRoles.map((role) => {
+			return role.id;
+		});
+	} else {
+		ElMessage.error('获取该用户角色数据失败：' + res.message);
+	}
+}
+
+// 确认分配角色
+async function confirmRoleForm() {
+	roleDrawerVisible.value = false;
+	let res = await reqSetRole({
+		roleIdList: checkedRoles.value,
+		userId: roleForm.userId,
+	});
+	if (res.code === 200) {
+		ElMessage.success('分配角色成功');
+		getUserList();
+	} else {
+		ElMessage.error('分配角色失败：' + res.message);
+	}
+}
+
+// 全选按钮勾选发生变化
+function handleCheckAllChange(val: boolean) {
+	checkedRoles.value = val
+		? roleForm.allRolesList.map((role) => role.id)
+		: [];
+	isIndeterminate.value =
+		checkedRoles.value.length > 0 &&
+		checkedRoles.value.length < roleForm.allRolesList.length;
+}
+
+// 复选框组勾选发生变化
+const handleCheckedRolesChange = (value: CheckboxValueType[]) => {
+	const checkedCount = value.length;
+	checkAll.value = checkedCount === roleForm.allRolesList.length;
+	isIndeterminate.value =
+		checkedCount > 0 && checkedCount < roleForm.allRolesList.length;
+};
 </script>
 
 <style lang="css" scoped>
@@ -404,6 +542,7 @@ function deleteUsers() {}
 	justify-content: space-between;
 	align-items: center;
 }
+
 .el-card {
 	margin: 10px 0;
 }

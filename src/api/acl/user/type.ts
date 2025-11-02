@@ -21,7 +21,8 @@ export interface UserData {
 	username: string;
 }
 
-export interface UserResponseDate extends ResponseData {
+// 获取用户分页列表时返回数据的ts类型
+export interface UserResponseData extends ResponseData {
 	data: {
 		size: number;
 		total: number;
@@ -29,4 +30,31 @@ export interface UserResponseDate extends ResponseData {
 		pages: number;
 		records: UserData[];
 	};
+}
+
+// 角色类型
+export interface RoleData {
+	createTime?: {
+		'time.Time': string;
+	};
+	id: number;
+	remark?: string;
+	roleName: string;
+	updateTime?: {
+		'time.Time': string;
+	};
+}
+
+// 根据用户角色返回数据的ts类型
+export interface UserRoleResponseData extends ResponseData {
+	data: {
+		allRolesList: RoleData[];
+		asssignRoles: RoleData[];
+	};
+}
+
+// 为用户分配角色时所需的参数类型
+export interface AssignRoleData {
+	userId: number;
+	roleIdList: number[];
 }
