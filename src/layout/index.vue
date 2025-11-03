@@ -64,7 +64,7 @@ const settingStore = useSettingStore();
 	width: 100%;
 	height: 100vh;
 	// background: red;
-	background-color: #fff;
+	// background-color: #fff;
 	.layout_slider {
 		height: 100vh;
 		width: $base-menu-width;
@@ -88,7 +88,7 @@ const settingStore = useSettingStore();
 		// width: 100%;   // 不能遮住左边的侧栏
 		width: calc(100% - $base-menu-width);
 		height: $base-tabbar-height;
-		background-color: #fff;
+		// background-color: #fff;
 		top: 0;
 		transition: all 0.3s;
 		// right: 0;
@@ -107,7 +107,7 @@ const settingStore = useSettingStore();
 		top: $base-tabbar-height;
 		padding: 20px;
 		// background-color: green;
-		background-color: #fff;
+		// background-color: #fff;
 		box-sizing: border-box;
 		overflow: auto;
 		&.expand {

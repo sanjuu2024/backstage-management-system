@@ -8,6 +8,9 @@ import 'virtual:svg-icons-register';
 // 导入全局样式
 import '@/assets/styles/index.scss';
 
+// 导入暗黑模式css
+import 'element-plus/theme-chalk/dark/css-vars.css';
+
 // svg配置
 // 引入可以批量注册全局组件的自定义插件
 // @/components即@/components/index.任意后缀名
