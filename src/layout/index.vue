@@ -61,6 +61,7 @@ const settingStore = useSettingStore();
 
 <style scoped lang="scss">
 .layout_container {
+	overflow: hidden;
 	width: 100%;
 	height: 100vh;
 	// background: red;
@@ -94,7 +95,7 @@ const settingStore = useSettingStore();
 		// right: 0;
 		left: $base-menu-width;
 		&.expand {
-			width: calc(100vh - $base-menu-min-width);
+			width: calc(100vw - $base-menu-min-width);
 			left: $base-menu-min-width;
 		}
 	}
@@ -111,7 +112,7 @@ const settingStore = useSettingStore();
 		box-sizing: border-box;
 		overflow: auto;
 		&.expand {
-			width: calc(100vh - $base-menu-min-width);
+			width: calc(100vw - $base-menu-min-width);
 			left: $base-menu-min-width;
 		}
 	}

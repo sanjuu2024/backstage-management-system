@@ -1,6 +1,20 @@
 /* 使用现代的 @use 代替 @import */
 @use './reset.scss';
 
+// 防止 body 和 html 产生滚动条
+html, body {
+    overflow: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+// 确保根元素大小正确
+#app {
+    height: 100vh;
+    overflow: hidden;
+}
+
 // 设置全局滚动条样式(感觉没原生好看)
 // ::-webkit-scrollbar {
 //     width: 10px;
