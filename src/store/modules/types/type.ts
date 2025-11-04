@@ -9,6 +9,7 @@ export interface UserState {
 		username: string;
 		avatar: string;
 	};
+	buttons: string[];
 }
 
 // categoryStore的state类型

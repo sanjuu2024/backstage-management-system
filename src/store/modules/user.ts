@@ -48,6 +48,8 @@ export const useUserStore = defineStore('user', {
 				username: '',
 				avatar: '',
 			},
+			// 🍉按钮权限
+			buttons: [],
 		};
 	},
 	actions: {
@@ -55,7 +57,7 @@ export const useUserStore = defineStore('user', {
 		async userLogin(data: LoginFormData) {
 			// 其实貌似ts会自动推断res的类型的
 			let res: LoginResponseData = await reqLogin(data);
-			console.log('登录返回：', res);
+			// console.log('登录返回：', res);
 			if (res.code === 200) {
 				this.token = res.data as string;
 				SET_TOKEN(this.token);
@@ -89,6 +91,9 @@ export const useUserStore = defineStore('user', {
 				[...userAsyncRoutes, anyRoute].forEach((route) => {
 					router.addRoute(route);
 				});
+
+				// 🍉按钮权限
+				this.buttons = res.data.buttons;
 			} else throw new Error(res.message);
 		},
 		// 用户退出登录

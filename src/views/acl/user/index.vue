@@ -467,7 +467,7 @@ function handleSelectionChange(val: UserData[]) {
 
 // 判断当前行是否可选（即能否作为批量删除的用户之一）
 function checkSelectable(row: UserData) {
-	console.log('row: ', row);
+	// console.log('row: ', row);
 	if (row?.username === userStore.userInfo.username) return false;
 	return true;
 }

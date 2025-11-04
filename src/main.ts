@@ -39,6 +39,10 @@ app.use(globalComponent);
 // 🍉🍉🍉执行一次permission.ts
 import './permission';
 
+// 🍉🍉🍉引入自定义指令文件buttonOK.ts，引入按钮权限
+import { has } from '@/directive/has';
+has(app);
+
 app.mount('#app');
 
 // console.log(localStorage.getItem('test)'));

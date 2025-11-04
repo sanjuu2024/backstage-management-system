@@ -126,7 +126,7 @@ export const asyncRoutes = [
 		},
 		children: [
 			{
-				name: 'Brands',
+				name: 'Trademark', // 本来想叫Brands的，但是后端的权限管理写的就是Trademark，只能跟着改了
 				path: 'brands',
 				component: () => import('@/views/product/brands/index.vue'),
 				meta: {

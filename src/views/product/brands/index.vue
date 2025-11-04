@@ -8,6 +8,7 @@
 				icon="Plus"
 				@click="addBrand"
 				style="display: inline"
+				v-has="'btn.Trademark.add'"
 			>
 				添加品牌
 			</el-button>
@@ -38,6 +39,7 @@
 							type="warning"
 							icon="Edit"
 							@click="updateBrand(row)"
+							v-has="'btn.Trademark.update'"
 						></el-button>
 
 						<!-- 给删除按钮加一个气泡确认框 -->
@@ -152,7 +154,7 @@ import type {
 	Brand,
 	ExistingBrandsResponseData,
 } from '@/api/product/brands/type';
-import { useUserStore } from '@/store/modules/user'; // 为了获取token让el-upload发送请求时带上
+import { useUserStore } from '@/store/modules/user'; // 为了获取token让el-upload发送请求时带上,以及获取按钮权限
 import { ElMessage, type UploadProps } from 'element-plus';
 
 // 获取用户store
