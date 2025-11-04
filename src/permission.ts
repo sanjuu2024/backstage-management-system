@@ -2,6 +2,7 @@
 // 路由鉴权
 import router from '@/router';
 // (1) 🍰引入进度条
+// @ts-ignore
 import NProgress from 'nprogress';
 // (2) 🍰引入进度条样式(必需)(如果要改进度条样式也可以直接进去源码改，找#nprogress .bar)
 import 'nprogress/nprogress.css';
@@ -42,7 +43,8 @@ router.beforeEach(async (to: any, from: any, next: any) => {
 			if (!userStore.userInfo.username) {
 				try {
 					await userStore.getUserInfo();
-					next();
+					// 🔺🔺🔺修复：🔺确保路由添加完成后🔺，重新导航到目标路由
+					next({ ...to, replace: true });
 				} catch (err) {
 					// 除了网速，还有可能是token过期。这里统一认为是token过期。
 					alert('获取信息失败：' + err);

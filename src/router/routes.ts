@@ -49,109 +49,6 @@ export const constRoutes = [
 					icon: 'DataAnalysis',
 				},
 			},
-			// 权限管理
-			{
-				name: 'Acl',
-				path: 'acl',
-				component: () => import('@/views/acl/index.vue'),
-				redirect: { name: 'User' }, // 🍉哦哦确实可以！猜的，果然redirect也可以用name。不用写冗杂的长路径真是太好了。
-				meta: {
-					title: '权限管理',
-					hidden: false,
-					icon: 'Lock',
-				},
-				children: [
-					{
-						name: 'User',
-						path: 'user',
-						component: () => import('@/views/acl/user/index.vue'),
-						meta: {
-							title: '用户管理',
-							hidden: false,
-							icon: 'User',
-						},
-					},
-					{
-						name: 'Role',
-						path: 'role',
-						component: () => import('@/views/acl/role/index.vue'),
-						meta: {
-							title: '角色管理',
-							hidden: false,
-							icon: 'UserFilled',
-						},
-					},
-					{
-						name: 'Permission',
-						path: 'permission',
-						component: () =>
-							import('@/views/acl/permission/index.vue'),
-						meta: {
-							title: '菜单管理',
-							hidden: false,
-							icon: 'Monitor',
-						},
-					},
-				],
-			},
-			// 商品管理
-			{
-				name: 'Product',
-				path: 'product',
-				component: () => import('@/views/product/index.vue'),
-				redirect: { name: 'Brands' },
-				meta: {
-					title: '商品管理',
-					hidden: false,
-					icon: 'Goods',
-				},
-				children: [
-					{
-						name: 'Brands',
-						path: 'brands',
-						component: () =>
-							import('@/views/product/brands/index.vue'),
-						meta: {
-							title: '品牌管理',
-							hidden: false,
-							icon: 'ShoppingCartFull',
-						},
-					},
-					{
-						name: 'Attr',
-						path: 'attr',
-						component: () =>
-							import('@/views/product/attr/index.vue'),
-						meta: {
-							title: '属性管理',
-							hidden: false,
-							icon: 'SetUp',
-						},
-					},
-					{
-						name: 'Spu',
-						path: 'spu',
-						component: () =>
-							import('@/views/product/spu/index.vue'),
-						meta: {
-							title: 'SPU管理',
-							hidden: false,
-							icon: 'Calendar',
-						},
-					},
-					{
-						name: 'Sku',
-						path: 'sku',
-						component: () =>
-							import('@/views/product/sku/index.vue'),
-						meta: {
-							title: 'SKU管理',
-							hidden: false,
-							icon: 'Orange',
-						},
-					},
-				],
-			},
 		],
 	},
 	// 404页面
@@ -165,15 +62,121 @@ export const constRoutes = [
 			icon: 'DocumentDeleted',
 		},
 	},
-	// 任意路由
+] as RouteRecordRaw[];
+
+// 异步路由
+// 怪不得视频前面path全部写老长，原来后面会拆出来...
+export const asyncRoutes = [
+	// 权限管理
 	{
-		name: 'Any',
-		path: '/:pathMatch(.*)*',
-		redirect: '/404',
+		name: 'Acl',
+		path: '/acl', // 🔺🔺🔺🔺🔺现在acl路由拆出来了，不再是当子组件时候写的path:'acl'，而是需要写完整：'/acl'
+		// component: () => import('@/views/acl/index.vue'),   // ❌
+		component: () => import('@/layout/index.vue'), // ✅
+		redirect: { name: 'User' }, // 🍉哦哦确实可以！猜的，果然redirect也可以用name。不用写冗杂的长路径真是太好了。
 		meta: {
-			title: '任意路由重定向404',
-			hidden: true,
-			icon: 'Promotion',
+			title: '权限管理',
+			hidden: false,
+			icon: 'Lock',
 		},
+		children: [
+			{
+				name: 'User',
+				path: 'user',
+				component: () => import('@/views/acl/user/index.vue'),
+				meta: {
+					title: '用户管理',
+					hidden: false,
+					icon: 'User',
+				},
+			},
+			{
+				name: 'Role',
+				path: 'role',
+				component: () => import('@/views/acl/role/index.vue'),
+				meta: {
+					title: '角色管理',
+					hidden: false,
+					icon: 'UserFilled',
+				},
+			},
+			{
+				name: 'Permission',
+				path: 'permission',
+				component: () => import('@/views/acl/permission/index.vue'),
+				meta: {
+					title: '菜单管理',
+					hidden: false,
+					icon: 'Monitor',
+				},
+			},
+		],
+	},
+	// 商品管理
+	{
+		name: 'Product',
+		path: '/product', // 🔺🔺🔺🔺🔺同理
+		// component: () => import('@/views/product/index.vue'),   // ❌
+		component: () => import('@/layout/index.vue'), // ✅
+		redirect: { name: 'Brands' },
+		meta: {
+			title: '商品管理',
+			hidden: false,
+			icon: 'Goods',
+		},
+		children: [
+			{
+				name: 'Brands',
+				path: 'brands',
+				component: () => import('@/views/product/brands/index.vue'),
+				meta: {
+					title: '品牌管理',
+					hidden: false,
+					icon: 'ShoppingCartFull',
+				},
+			},
+			{
+				name: 'Attr',
+				path: 'attr',
+				component: () => import('@/views/product/attr/index.vue'),
+				meta: {
+					title: '属性管理',
+					hidden: false,
+					icon: 'SetUp',
+				},
+			},
+			{
+				name: 'Spu',
+				path: 'spu',
+				component: () => import('@/views/product/spu/index.vue'),
+				meta: {
+					title: 'SPU管理',
+					hidden: false,
+					icon: 'Calendar',
+				},
+			},
+			{
+				name: 'Sku',
+				path: 'sku',
+				component: () => import('@/views/product/sku/index.vue'),
+				meta: {
+					title: 'SKU管理',
+					hidden: false,
+					icon: 'Orange',
+				},
+			},
+		],
 	},
 ] as RouteRecordRaw[];
+
+// 任意路由(🔺注意是一个对象，不是一个数组)
+export const anyRoute = {
+	name: 'Any',
+	path: '/:pathMatch(.*)*',
+	redirect: '/404',
+	meta: {
+		title: '任意路由重定向404',
+		hidden: true,
+		icon: 'Promotion',
+	},
+};
