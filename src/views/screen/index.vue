@@ -10,8 +10,15 @@
 					<Sex class="sex" />
 					<Age class="age" />
 				</div>
-				<div class="center"></div>
-				<div class="right"></div>
+				<div class="center">
+					<Map class="map"></Map>
+					<Line class="line"></Line>
+				</div>
+				<div class="right">
+					<Rank class="rank"></Rank>
+					<Year class="year"></Year>
+					<Counter class="counter"></Counter>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -19,10 +26,19 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+// 引入顶部组件
 import Top from './components/top/index.vue';
+// 引入左侧组件
 import Tourist from './components/tourist/index.vue';
 import Sex from './components/sex/index.vue';
 import Age from './components/age/index.vue';
+// 引入中间组件
+import Map from './components/map/index.vue';
+import Line from './components/line/index.vue';
+// 引入右侧组件
+import Rank from './components/rank/index.vue';
+import Year from './components/year/index.vue';
+import Counter from './components/counter/index.vue';
 
 defineOptions({
 	name: 'Screen',
@@ -64,6 +80,9 @@ window.onresize = () => {
 		top: 50%;
 		transform-origin: left top;
 		// background-color: orange;
+		// div{
+		// 	overflow: hidden;
+		// }
 		.top {
 			width: 100%;
 			height: 40px;
@@ -76,7 +95,7 @@ window.onresize = () => {
 				display: flex;
 				flex-direction: column;
 				.tourist {
-					flex: 1;
+					flex: 1.5;
 				}
 				.sex {
 					flex: 1;
@@ -88,10 +107,30 @@ window.onresize = () => {
 			.center {
 				flex: 2.5;
 				height: 1040px;
+				display: flex;
+				flex-direction: column;
+				margin: 0 10px;
+				.map {
+					flex: 3.5;
+				}
+				.line {
+					flex: 1;
+				}
 			}
 			.right {
 				flex: 1;
 				height: 1040px;
+				display: flex;
+				flex-direction: column;
+				.rank {
+					flex: 1.5;
+				}
+				.year {
+					flex: 1;
+				}
+				.counter {
+					flex: 1;
+				}
 			}
 		}
 	}

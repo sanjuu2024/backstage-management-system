@@ -96,7 +96,7 @@ onMounted(() => {
 		}
 	}
 	.sex {
-		margin-top: 40px;
+		margin-top: 30px;
 		display: flex;
 		justify-content: space-evenly;
 		align-items: center;
@@ -129,7 +129,7 @@ onMounted(() => {
 		font-size: 18px;
 	}
 	.charts {
-		height: 100px;
+		height: 80px;
 	}
 }
 </style>
