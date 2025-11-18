@@ -170,8 +170,6 @@ src/
 
 根据学习视频实现了硅谷甄选平台的所有功能，略有删改。
 
-<br/>
-
 ### v2.0.0
 
 修改了API前缀（vite配置文件），使之能作为名为app的项目部署在tomcat上。
@@ -187,3 +185,95 @@ src/
 > （1）​前面一些工具的部署可以使用ai帮忙写配置项（视频版本和现在的一些配置写法不是特别匹配）；<br/>
 > （2）官方接口不太好用，我自己是用的这个大佬的后端（github上）：WangJian3306/vue3_admin_backend，（wsl2+docker部署的）；<br/>
 > ​（3）关于命名规范，老师有一些不算特别规范，比如自定义事件其实建议使用kebab-case命名（羊肉串命名，比如get-toy），建议可以网络搜索 / ai询问vue项目各类命名规范（路由命名、文件命名、自定义事件命名等）再开始写项目；
+
+<br/>
+
+## 附录
+
+### （1）部署Tomcat相关
+
+> 另外事先说明，项目并没有处理部署之后，服务端返回图片为相对路径的url问题。（因为真实生产环境中后端返回绝对路径偏多）
+
+如果要把该项目部署到Tomcat上，请使用该项目 v2.0.0 以上 release 版本。
+
+<br/>
+
+#### tomcat版本
+
+tomcat 10.0（配置文件与 tomcat8 和 tomcat9 都不兼容）
+
+<br/>
+
+#### tomcat配置文件
+
+- `tomcat安装目录/conf/Catalina/localhost/app.xml`
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Context docBase="...\app(请替换为该项目的部署目录)" reloadable="true">
+</Context>
+```
+
+- `app(项目部署目录)/WEB_INF/web.xml`
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+  <display-name>Vue App</display-name>
+
+  <!-- Vue SPA 支持 - 所有404错误重定向到index.html -->
+  <error-page>
+    <error-code>404</error-code>
+    <location>/index.html</location>
+  </error-page>
+
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
+  <!-- 防止直接访问WEB-INF目录 -->
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Forbidden</web-resource-name>
+      <url-pattern>/WEB-INF/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint/>
+  </security-constraint>
+</web-app>
+```
+
+- `app(项目部署目录)/WEB_INF/rewrite.config`
+
+```
+RewriteCond %{REQUEST_URI} ^/api/(.*)$
+RewriteRule ^/api/(.*)$ http://127.0.0.1:10086/api/$1 [P,L]
+```
+
+<br/>
+
+#### 部署步骤
+
+##### 1.下载和安装tomcat10
+
+##### 2. 打包项目
+
+项目根目录下运行：
+
+```bash
+pnpm vite build --mode production
+```
+
+##### 3. 把生成的dist目录改名为app
+
+##### 4. 在app目录下新增WEB-INF文件夹，并放入上面配置文件中的`web.xml`和`rewrite.config`
+
+##### 5. 在tomcat的安装目录下，找到`conf/Catalina/localhost`，然后在其中创建`app.xml`，内容同上方配置文件
+
+##### 6. 运行tomcat安装目录下的`bin/startup.bat`
+
+##### 7. 浏览器地址栏输入`http://localhost:8080/app/`即可访问
