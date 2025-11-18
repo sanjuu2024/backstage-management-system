@@ -43,13 +43,13 @@ router.beforeEach(async (to: any, from: any, next: any) => {
 			if (!userStore.userInfo.username) {
 				try {
 					await userStore.getUserInfo();
-					// 🔺🔺🔺修复：🔺确保路由添加完成后🔺，重新导航到目标路由
-					next({ ...to, replace: true });
+					// 🔺🔺🔺获取用户信息后才放行
+					next();
 				} catch (err) {
 					// 除了网速，还有可能是token过期。这里统一认为是token过期。
 					alert('获取信息失败：' + err);
 					await userStore.userLogout(); // token过期先退出登录，然后去到login界面
-					next({ path: '/login', query: { redirect: to.path } });
+					next({ path: '/login', query: { redirect: to.fullPath } }); // 🔺为了tomcat
 				}
 			} else next();
 		}
@@ -59,7 +59,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
 		if (to.path === '/login') {
 			next();
 		} else {
-			next({ path: '/login', query: { redirect: to.path } });
+			next({ path: '/login', query: { redirect: to.fullPath } }); // 🔺为了tomcat
 		}
 	}
 });

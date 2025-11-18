@@ -1,4 +1,4 @@
-// 。🍉vite提供了loadEnv方法用于加载对应环境下的变量
+// 🍉vite提供了loadEnv方法用于加载对应环境下的变量
 import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
@@ -24,6 +24,7 @@ export default defineConfig(({ command, mode }) => {
 	// console.log('VITE_SERVE:', env.VITE_SERVE);
 
 	return {
+		base: '/app/', // 🍉🍉🍉测试tomcat部署时的基本路径配置，开发可以把这一句注释掉(不注释也不影响)🍉🍉🍉
 		plugins: [
 			vue(),
 			// 配置svg图标插件
@@ -63,15 +64,15 @@ export default defineConfig(({ command, mode }) => {
 			proxy: {
 				// 即VITE_APP_BASE_API
 				// 开发环境下关键字(关键路径?)为/api,
-				// 生产环境下关键字为/prod-api,
+				// 生产环境下关键字为http://127.0.0.1:10086(直接上后端地址)(实际生产环境不用这么麻烦因为前后端同个地址同个端口),
 				// 测试环境下关键字为/test-api,
 				// 所以不用一个个写如：'/api': {}，可以直接：
 				[env.VITE_APP_BASE_API]: {
 					// 🍰获取数据的服务器地址
-					target: env.VITE_SERVE, // 🔺🔺🔺写成server了...然后卡大半天怀疑人生...
+					target: env.VITE_SERVE, // 🔺写成server了...然后卡大半天怀疑人生...
 					// 🍰是否需要代理跨域
 					changeOrigin: true,
-					// 🍰路径重写(🔺🔺🔺注意不是`^/${...}`！！！VITE_APP_BASE_API自带`/`来着！！！)
+					// 🍰路径重写(🔺注意不是`^/${...}`！！！VITE_APP_BASE_API自带`/`来着！！！)
 					rewrite: (path) =>
 						path.replace(
 							new RegExp(`^${env.VITE_APP_BASE_API}`),
